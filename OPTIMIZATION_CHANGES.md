@@ -1,60 +1,59 @@
 # Landing Site Optimization and Fixes
 
-This document outlines the optimizations and fixes implemented in the landing site project.
+This document outlines the optimizations and fixes implemented in the landing site project, following a "Where/What/Why" format.
 
-## 1. Security Vulnerability Fix
+## 1. Security
 
-*   **Issue:** The Pexels API key was exposed on the client-side in the gallery page (`app/gallery/page.tsx`), posing a significant security risk.
-*   **Fix:**
-    *   Created a new server-side API route at `app/api/pexels/route.ts` to handle all requests to the Pexels API.
-    *   The API key is now stored securely in a `.env.local` file and is only accessed on the server-side.
-    *   The gallery page now fetches data from the new API route, preventing the API key from being exposed in the browser.
+*   **Where:** `app/api/pexels/route.ts`, `app/gallery/page.tsx`, `.env.local`
+*   **What:** Created a server-side API route to handle Pexels API requests and moved the API key to a `.env.local` file.
+*   **Why:** To fix a critical security vulnerability that exposed the Pexels API key on the client-side, preventing unauthorized use.
 
-## 2. Image Optimization
+## 2. Performance Optimization
 
-*   **Issue:** Large, unoptimized images in the `public` directory were slowing down page load times.
-*   **Fix:**
-    *   Compressed all PNG images in the `public` directory using `imagemin-cli` with the `pngquant` plugin.
-    *   Replaced the original images with their optimized versions, resulting in smaller file sizes and faster loading times.
-    *   Updated the `BlogPostCard.tsx` component to use the `next/image` component, which enables lazy loading and automatic image optimization for blog post images.
+*   **Where:** `public/` directory, `app/components/BlogPostCard.tsx`
+*   **What:** Compressed all PNG images and updated the `BlogPostCard` component to use the `next/image` component.
+*   **Why:** To reduce image file sizes and enable lazy loading, significantly improving page load times and overall performance.
 
-## 3. Component Optimization
+*   **Where:** `app/components/PromptInput.tsx`
+*   **What:** Refactored the component to simplify state management and remove unnecessary `useEffect` hooks.
+*   **Why:** To make the code more efficient, reduce re-renders, and improve the maintainability of the component.
 
-*   **Issue:** Several React components had opportunities for performance improvements.
-*   **Fix:**
-    *   **`PromptInput.tsx`:** Refactored the component to remove redundant state management and consolidated `useEffect` hooks, making the code more efficient and easier to maintain.
-    *   **`FontShowcase.tsx`:** Moved the large `fonts` array from the component file to a separate file (`app/lib/fonts.ts`). This prevents the array from being recreated on every render, improving performance.
+*   **Where:** `app/components/FontShowcase.tsx`, `app/lib/fonts.ts`
+*   **What:** Moved the large `fonts` array from the component to a separate, reusable file.
+*   **Why:** To prevent the array from being recreated on every render, which improves performance and memory usage.
 
-## 4. Video Optimization
+*   **Where:** `app/components/Hero.tsx`
+*   **What:** Replaced the background video with a more optimized version and added a `poster` image.
+*   **Why:** To improve the loading performance of the hero section and provide a better user experience while the video is loading.
 
-*   **Issue:** The background video in the `Hero.tsx` component was not optimized for web playback.
-*   **Fix:**
-    *   Replaced the original video with a more compressed and optimized version.
-    *   Added a `poster` image to the video element. The poster image is displayed while the video is loading, improving the user experience.
+*   **Where:** `app/layout.tsx`, `app/lib/fonts.ts`
+*   **What:** Removed direct Google Fonts loading and implemented the `next/font` module for optimized font delivery.
+*   **Why:** To allow Next.js to automatically optimize font loading, which improves the First Contentful Paint (FCP) and overall application performance.
 
-## 5. Code Cleanup and Font Optimization
+## 3. Bug Fixes
 
-*   **Issue:** The `layout.tsx` file was loading a large number of fonts directly from Google Fonts, which is inefficient.
-*   **Fix:**
-    *   Removed the direct font loading from the `layout.tsx` file.
-    *   Used the `next/font` module to load the `Inter` font, allowing Next.js to optimize font loading and improve the overall performance of the application.
+*   **Where:** `app/blog/[slug]/page.tsx`, `app/blog/page.tsx`, `app/lib/posts.ts`
+*   **What:** Created a dynamic route for blog posts, moved the `blogPosts` array to a reusable file, and updated the `next/image` components.
+*   **Why:** To fix the 404 errors on the blog post links and resolve the legacy warnings from the `next/image` component.
 
-These changes have significantly improved the performance, security, and code quality of the landing site.
+*   **Where:** `app/pricing/page.tsx`
+*   **What:** Updated the "Start Free Trial" button links to point to the `/demo` page.
+*   **Why:** To fix the 404 errors and ensure that users are directed to the correct page.
 
-## 6. Bug Fixes
+*   **Where:** `app/contact/page.tsx`, `app/pricing/page.tsx`
+*   **What:** Created a new contact page and updated the "Contact Sales" button links.
+*   **Why:** To fix the 404 errors and provide a functional contact page for users.
 
-*   **Issue:** The blog post links were broken, leading to a 404 error page.
-*   **Fix:**
-    *   Created a dynamic route at `app/blog/[slug]/page.tsx` to handle individual blog posts.
-    *   Moved the `blogPosts` array to a separate file (`app/lib/posts.ts`) to be reused by both the main blog page and the dynamic route.
-    *   Updated the `next/image` components to use the latest properties, removing the legacy warnings from the terminal.
-*   **Issue:** The "Start Free Trial" buttons on the pricing page were leading to a 404 error page.
-*   **Fix:**
-    *   Updated the `ctaLink` for the "House" and "Village" plans in `app/pricing/page.tsx` to point to the `/demo` page.
-*   **Issue:** The "Contact Sales" buttons on the pricing page were leading to a 404 error page.
-*   **Fix:**
-    *   Created a new contact page at `app/contact/page.tsx`.
+## 4. New Features
 
-## 7. New Features
+*   **Where:** `app/components/AppBar.tsx`
+*   **What:** Implemented a scroll-activated background color and text color change for the navigation bar.
+*   **Why:** To improve the user experience by making the navigation bar more visible and readable as the user scrolls.
 
-*   **Navbar background on scroll:** Added a feature to the navigation bar that gives it a background color when the user scrolls down the page. This improves the user experience by making the navigation bar more visible against the page content. The text color also changes to white when the page is not scrolled.
+## 5. Deployment
+
+*   **Where:** Render Dashboard
+*   **What:** Provided the correct build and start commands for deploying a Next.js application.
+*   **Why:** To ensure that the project builds and deploys successfully on Render.
+    *   **Build command:** `npm install && npm run build`
+    *   **Start command:** `npm start`
