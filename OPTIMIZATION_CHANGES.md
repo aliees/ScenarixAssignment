@@ -54,3 +54,7 @@ These changes have significantly improved the performance, security, and code qu
 *   **Issue:** The "Contact Sales" buttons on the pricing page were leading to a 404 error page.
 *   **Fix:**
     *   Created a new contact page at `app/contact/page.tsx`.
+
+## 7. New Features
+
+*   **Navbar background on scroll:** Added a feature to the navigation bar that gives it a background color when the user scrolls down the page. This improves the user experience by making the navigation bar more visible against the page content. The text color also changes to white when the page is not scrolled.
